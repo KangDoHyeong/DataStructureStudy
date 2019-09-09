@@ -22,3 +22,13 @@ Test용!! 입니다!!!!!
   print(hi)
 
 `
+```C
+printf("hello World\n");
+printf("hello World\n");
+printf("hello World\n");
+```
+```Python
+print("hi")
+print("hi")
+print("hi")
+```
