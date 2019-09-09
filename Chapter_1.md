@@ -9,3 +9,16 @@
 1. 안녕
 
 2. 
+
+`import antigravity`
+
+#!/usr/bin/env clojure
+    (println "Hello, World!")
+    
+`
+  hello
+  print(hello)
+  
+  print(hi)
+
+`
