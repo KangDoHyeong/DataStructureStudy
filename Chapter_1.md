@@ -2,33 +2,77 @@
 
 # Chaprter 1
 
-Test용!! 입니다!!!!!
+- 자료구조와 알고리즘의 차이
+    - 자료구조 : 데이터의 표현 및 저장방법 
+    - 알고리즘 : 표현 및 저장된 데이터를 대상으로 하는 '문제의 해결 방법'
 
-블라블라
+    → 결론 : 서로 의존적이다.
 
-1. 안녕
 
-2. 
+### 알고리즘의 성능 분석 방법
+- 시간복잡도/공간복잡도
+    - 시간복잡도 : 알고리즘 실행속도에 관한 것
+    - 공간복잡도 : 메모리 사용량에 관한 것
 
-`import antigravity`
-
-#!/usr/bin/env clojure
-    (println "Hello, World!")
+- 알고리즘 수행속도 평가방법
+    1) 연산의 횟수를 세기
+    2) 처리해야할 데이터의 수 n에 대한 연산횟수의 함수 T(n)구성하기.
+        
+        > 이때, T(n)을 굳이 구성하는 이유는 데이터 수의 증가에 따른 연산횟수의 변화정도를 파악하는 것이 가능하기 때문
+        
+        
+    > Q. 어떤 알고리즘이 좋은 알고리즘인가?
     
-`
-  hello
-  print(hello)
+    > A. 상황에 맞게 판단해야한다. 즉, 안정적인 성능을 보장하는 알고리즘은 구현난이도가 높은 반면, 그렇지 않은 알고리즘은 구현난이도가 낮으므로, 데이터가 수가 많지 않고 성능에 덜 민감한 경우 구현난이도가 낮은 알고리즘을 선택한다.
   
-  print(hi)
 
-`
+- 시간 복잡도 분석의 핵심요소 
+    1) 알고리즘마다 핵심이 되는 연산 파악하기
+        - 그 연산을 줄이는 것이 시간 복잡도를 줄이는 길
+    2) 시간복잡도를 따지는 기준
+        - 최선의 경우(best case)
+        - 최악의 경우(worst case)
+        - 평균적인 경우(average case) : 제일 좋으나, 어떤게 평균적인 기준인지 명확하지 않음
+        
+        → 결론 : 최악의 경우로 따진다.
+
+
+
+### 순차 탐색(Linear Search) 알고리즘과 시간 복잡도 분석의 핵심요소
+
 ```C
-printf("hello World\n");
-printf("hello World\n");
-printf("hello World\n");
-```
-```Python
-print("hi")
-print("hi")
-print("hi")
+#include <stdio.h>
+
+int LSearch(int ar[], int len, int target) {
+	// 순차 탐색 알고리즘 적용된 함수
+
+	int i;
+	for (i = 0; i < len; i++) {
+		if (ar[i] == target) {
+			return i;              // 찾은 대상의 인덱스 값 반환
+		} 
+	}
+	return -1;                    // 찾지 못했음을 의미하는 값 반환 
+}
+
+int main() {
+	int arr[] = { 3, 5, 2, 4, 9 };
+	int idx;
+	idx = LSearch(arr, sizeof(arr) / sizeof(int), 4);
+	if (idx == -1) {
+		printf("탐색 실패 \n");
+	}
+	else {
+		printf("타겟 저장 인덱스 : %d\n", idx);
+	}
+
+	idx = LSearch(arr, sizeof(arr) / sizeof(int), 7);
+	if (idx == -1) {
+		printf("탐색 실패\n");
+	}
+	else {
+		printf("타겟 저장 인덱스 : %d\n", idx);
+	}
+	return 0;
+}
 ```
