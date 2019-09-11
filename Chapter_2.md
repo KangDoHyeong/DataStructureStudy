@@ -213,7 +213,7 @@ int main()
 ### 하노이 타워 문제의 이해
 - 재귀적으로 접근하지 않으면 해결이 쉽지 않은 문제
 > "원반은 한 번에 하나씩만 옮길 수 있습니다. 그리고 옮기는 과정에서 작은 원반의 위에 큰 원반이 올려져서는 안됩니다."
-<br> ![The Tower of Hanoi](https://en.wikipedia.org/wiki/File:Iterative_algorithm_solving_a_6_disks_Tower_of_Hanoi.gif)
+<br>
 
 하노이 타워의 문제를 일반화시키면 다음과 같다.
 1) 작은 원반 n-1개를 A에서 B로 이동
