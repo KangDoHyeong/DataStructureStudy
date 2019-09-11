@@ -106,6 +106,8 @@ int main(void)
         - 리스트에 저장되어 있는 데이터의 수를 반환한다.
 <br><br>   
 ### 리스트의 ADT를 기반으로 정의된 main 함수
+- ListMain.c
+
 ``` C
 #include <stdio.h>
 #include "ArrayList.h"
@@ -113,14 +115,14 @@ int main(void)
 int main(void)
 {
     // ArrayList의 생성 및 초기화
-    List list;
+    List list;  // 리스트의 생성
     int data;
-    ListInit(&list)
+    ListInit(&list)  // 리스트의 초기화
         
     // 5개의 데이터 저장
-    LInsert(&list, 11); LInsert(&list, 11);
-    LInsert(&list, 22); LInsert(&list, 22);
-    LInsert(&list, 33);
+    LInsert(&list, 11); LInsert(&list, 11); // 리스트에 11을 저장
+    LInsert(&list, 22); LInsert(&list, 22); // 리스트에 22를 저장
+    LInsert(&list, 33); // 리스트에 33을 저장
     
     // 저장된 데이터의 전체 출력
     printf("현재 데어티의 수: %d \n", LCount(&list));
@@ -138,12 +140,12 @@ int main(void)
     if(LFirst(&list, &data))
     {
         if(data == 22)
-            LRemove(&list);
+            LRemove(&list); // 위의 LFirst 함수를 통해 참조한 데이터 삭제!
         
         while(LNext(&list, &data))
         {
             if(data == 22)
-                LRemove(&list);
+                LRemove(&list); // 위의 LNext 함수를 통해 참조한 데이터 삭제!
         }
     }
     
@@ -161,3 +163,269 @@ int main(void)
     return 0;
 }
 ```
+> "아직 소개하지 않은 파일들은 해당 도서의 자료실에서 다운받아서 실행결과를 확인하시기 바랍니다."<br>
+[열혈 자료구조 자료실](http://www.orentec.co.kr/jaryosil/DA_ST_1/add_form1.php)
+
+### 배열 기반 리스트의 헤더파일 정의
+- ArrayList.h
+
+``` h
+#ifndef __ARRAY_LIST_H__
+#define __ARRAY_LIST_H___
+
+#define TRUE  1   // '참'을 표현하기 위한 매크로 정의
+#define FALSE 0   // '거짓'을 표현하기 위한 매크로 정의
+
+#define LIST_LEN 100
+typedef int LData; // 저장할 대상의 자료형의 변경을 위한 typedef 선언
+
+typedef struct __ArrayList // 배열기반 리스트를 정의한 구조체
+{
+    LData arr[LIST_LEN];   // 리스트의 저장소인 배열
+    int numOfData;         // 저장된 데이터의 수
+    int curPosition        // 데이터 참조위치를 기록
+} ArrayList;               // 배열 기반 리스트를 의미하는 구조체
+
+typedef ArrayList List;    // 리스트의 변경을 용이하게 하기 위한 typedef 선언
+
+void ListInit(List * plist);              // 초기화
+void LInsert(List * plist, LData data);   // 데이터 저장
+
+int LFirst(List * plist, LData * pdata);  // 첫 데이터 참조
+int LNext(List * plist, LData * pdata);   // 두 번째 이후 데이터 참조
+
+LData LRemove(List * plist);              // 참조한 데이터 삭제
+int LCount(List * plist);                 // 저장된 데이터의 수 반환
+
+#endif
+```
+> 위의 함수들은 리스트 ADT를 기반으로 선언된 함수들이다.<br>
+> 따라서 배열 기반 리스트로 선언된 함수들의 내용을 제한할 필요가 없다.
+
+### 배열 기반의 리스트 구현 
+- ArrayList.c
+
+``` C
+#include <stdio.h>
+#include "ArrayList.h"
+
+void ListInit(List * plist)
+{
+	(plist->numOfData) = 0;
+	(plist->curPosition) = -1; // 아무런 위치도 참조하지 않았음을 의미
+}
+
+void LInsert(List * plist, LData data)
+{
+	if(plist->numOfData > LIST_LEN)  // 더 이상 저장할 공간이 없다면
+	{
+		puts("저장이 불가능합니다.");
+		return;
+	}
+
+	plist->arr[plist->numOfData] = data; // 데이터 저장
+	(plist->numOfData)++;                // 저장된 데이터의 수 증가
+}
+
+int LFirst(List * plist, LData * pdata)
+{
+	if(plist->numOfData == 0)  // 저장된 데이터가 하나도 없다면
+		return FALSE;
+
+	(plist->curPosition) = 0;  // 참조 위치 초기화! 첫 번째 데이터의 참조를 의미!
+	*pdata = plist->arr[0];    // pdata가 가리키는 공간에 데이터 저장
+	return TRUE;
+}
+
+int LNext(List * plist, LData * pdata)
+{
+	if(plist->curPosition >= (plist->numOfData)-1) // 더 이상 참조할 데이터가 없다면
+		return FALSE;
+
+	(plist->curPosition)++;
+	*pdata = plist->arr[plist->curPosition];
+	return TRUE;
+}
+
+LData LRemove(List * plist)
+{
+	int rpos = plist->curPosition; // 삭제할 데이터의 인덱스 값 차조
+	int num = plist->numOfData;
+	int i;
+	LData rdata = plist->arr[rpos]; // 삭제할 데이터를 임시로 저장
+
+    // 삭제를 위한 데이터의 이동을 진행하는 반복문
+	for(i=rpos; i<num-1; i++)
+		plist->arr[i] = plist->arr[i+1];
+
+	(plist->numOfData)--;      // 데이터의 수 감소
+	(plist->curPosition)--;    // 참조위치를 하나 되돌린다.
+	return rdata;              // 삭제된 데이터의 반환
+}
+
+int LCount(List * plist)
+{
+	return plist->numOfData;
+}
+```
+
+### 리스트에 구조체 변수 저장하기
+- Point.h
+
+``` h
+#ifndef __POINT_H__
+#define __POINT_H__
+
+typedef struct _point
+{
+	int xpos;
+	int ypos;
+} Point;
+
+// Point 변수의 xpos, ypos 값 설정
+void SetPointPos(Point * ppos, int xpos, int ypos);
+
+// Point 변수의 xpos, ypos 정보 출력 
+void ShowPointPos(Point * ppos);
+
+// 두 Point 변수의 비교
+int PointComp(Point * pos1, Point * pos2); 
+
+#endif
+
+```
+
+- Point.c
+
+``` C
+#include <stdio.h>
+#include "Point.h"
+
+void SetPointPos(Point * ppos, int xpos, int ypos)
+{
+	ppos->xpos = xpos;
+	ppos->ypos = ypos;
+}
+
+void ShowPointPos(Point * ppos)
+{
+	printf("[%d, %d] \n", ppos->xpos, ppos->ypos);
+}
+
+int PointComp(Point * pos1, Point * pos2)
+{
+	if(pos1->xpos == pos2->xpos && pos1->ypos == pos2->ypos)
+		return 0;
+	else if(pos1->xpos == pos2->xpos)
+		return 1;
+	else if(pos1->ypos == pos2->ypos)
+		return 2;
+	else
+		return -1;
+}
+
+```
+
+- ArrayList.h의 변경 사항 두 가지
+    - typedef int LData; (typedef 선언변경)  ->  typedef Point * LData;
+    - #include "Point.h" // ArrayList.h에 추가할 헤더파일 선언문
+<br><br>
+- 실행을 위한 파일 구성
+    - Point.h, Point.c &nbsp; &nbsp; 구조체 Point를 위한 파일
+    - ArrayList.h, ArrayList.c &nbsp;&nbsp; 배열 기반 리스트
+    - PointListMain.c &nbsp; &nbsp; 구조체 Point의 변수 저장
+    
+<br><br>
+- PointListMain.c
+
+``` C
+#include <stdio.h>
+#include <stdlib.h>
+#include "ArrayList.h"
+#include "Point.h"
+
+int main(void)
+{
+	List list;
+	Point compPos;
+	Point * ppos;
+
+	ListInit(&list);
+
+	/*** 4개의 데이터 저장 ***/
+	ppos = (Point*)malloc(sizeof(Point));
+	SetPointPos(ppos, 2, 1);
+	LInsert(&list, ppos);
+
+	ppos = (Point*)malloc(sizeof(Point));
+	SetPointPos(ppos, 2, 2);
+	LInsert(&list, ppos);
+
+	ppos = (Point*)malloc(sizeof(Point));
+	SetPointPos(ppos, 3, 1);
+	LInsert(&list, ppos);
+
+	ppos = (Point*)malloc(sizeof(Point));
+	SetPointPos(ppos, 3, 2);
+	LInsert(&list, ppos);
+
+	/*** 저장된 데이터의 출력 ***/
+	printf("현재 데이터의 수: %d \n", LCount(&list));
+
+	if(LFirst(&list, &ppos))
+	{
+		ShowPointPos(ppos);
+		
+		while(LNext(&list, &ppos))
+			ShowPointPos(ppos);
+	}
+	printf("\n");
+
+	/*** xpos가 2인 모든 데이터 삭제 ***/
+	compPos.xpos=2;
+	compPos.ypos=0;
+
+	if(LFirst(&list, &ppos))
+	{
+		if(PointComp(ppos, &compPos)==1)
+		{
+			ppos=LRemove(&list);
+			free(ppos);
+		}
+		
+		while(LNext(&list, &ppos)) 
+		{
+			if(PointComp(ppos, &compPos)==1)
+			{
+				ppos=LRemove(&list);
+				free(ppos);
+			}
+		}
+	}
+
+	/*** 삭제 후 남은 데이터 전체 출력 ***/
+	printf("현재 데이터의 수: %d \n", LCount(&list));
+
+	if(LFirst(&list, &ppos))
+	{
+		ShowPointPos(ppos);
+		
+		while(LNext(&list, &ppos))
+			ShowPointPos(ppos);
+	}
+	printf("\n");
+
+	return 0;
+}
+
+```
+
+### 배열 기반 리스트의 장점과 단점
+- 배열 기반 리스트의 단점
+    - 배열의 길이가 초기에 결정되어야 한다. 변경이 불가능하다.
+    - 삭제의 과정에서 데이터의 이동(복사)가 매우 빈번히 일어난다.
+<br><br>
+- 배열 기반 리스트의 장점
+    - 데이터 참조가 쉽다. 인덱스 값 기준으로 어디든 한 번에 참조 가능!
+    
+> 배열의 일반적인 단점과 장점 입니다.
