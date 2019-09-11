@@ -1,7 +1,7 @@
 ## 열혈 자료구조 스터디
 
 # Chaprter 1
-
+## 1-1. 자료구조(Data Structure)에 대한 기본적인 이해
 - 자료구조와 알고리즘의 차이
     - 자료구조 : 데이터의 표현 및 저장방법 
     - 알고리즘 : 표현 및 저장된 데이터를 대상으로 하는 '문제의 해결 방법'
@@ -9,10 +9,10 @@
   → 결론 : 서로 의존적이다.
 
 
-### 알고리즘의 성능 분석 방법
-- 시간복잡도/공간복잡도
-    - 시간복잡도 : 알고리즘 실행속도에 관한 것
-    - 공간복잡도 : 메모리 사용량에 관한 것
+## 1-2. 알고리즘의 성능 분석 방법
+### 시간복잡도/공간복잡도
+- 시간복잡도 : 알고리즘 실행속도에 관한 것
+- 공간복잡도 : 메모리 사용량에 관한 것
 
 - 알고리즘 수행속도 평가방법
     1) 연산의 횟수를 세기
@@ -20,7 +20,10 @@
         
         > 이때, T(n)을 굳이 구성하는 이유는 <br>T(n)을 통해 **데이터 수의 증가에 따른 연산횟수의 변화정도**를 파악하는 것이 가능하기 때문
        
-    > Q. 어떤 알고리즘이 좋은 알고리즘인가? <br>A. 상황에 맞게 판단해야한다. <br> 안정적인 성능을 보장하는 알고리즘은 구현난이도가 높은 반면, 그렇지 않은 알고리즘은 구현난이도가 낮으므로, <br>데이터가 수가 많지 않고 성능에 덜 민감한 경우 구현난이도가 낮은 알고리즘을 선택한다.
+    > **Q.** 어떤 알고리즘이 좋은 알고리즘인가? 
+    <br>**A.** 상황에 맞게 판단해야한다. 
+    <br> 안정적인 성능을 보장하는 알고리즘은 구현난이도가 높은 반면, 그렇지 않은 알고리즘은 구현난이도가 낮으므로, 
+    <br>데이터가 수가 많지 않고 성능에 덜 민감한 경우 구현난이도가 낮은 알고리즘을 선택한다.
   
 
 - 시간 복잡도 분석의 핵심요소 
@@ -39,34 +42,41 @@
 ```C
 #include <stdio.h>
 
-int LSearch(int ar[], int len, int target) {
+int LSearch(int ar[], int len, int target) 
+{
 	// 순차 탐색 알고리즘 적용된 함수
-
 	int i;
-	for (i = 0; i < len; i++) {
-		if (ar[i] == target) {
+	for (i = 0; i < len; i++) 
+	{
+		if (ar[i] == target) 
+		{
 			return i;              // 찾은 대상의 인덱스 값 반환
 		} 
 	}
 	return -1;                    // 찾지 못했음을 의미하는 값 반환 
 }
 
-int main() {
+int main() 
+{
 	int arr[] = { 3, 5, 2, 4, 9 };
 	int idx;
 	idx = LSearch(arr, sizeof(arr) / sizeof(int), 4);
-	if (idx == -1) {
+	if (idx == -1) 
+	{
 		printf("탐색 실패 \n");
 	}
-	else {
+	else 
+	{
 		printf("타겟 저장 인덱스 : %d\n", idx);
 	}
 
 	idx = LSearch(arr, sizeof(arr) / sizeof(int), 7);
-	if (idx == -1) {
+	if (idx == -1) 
+	{
 		printf("탐색 실패\n");
 	}
-	else {
+	else 
+	{
 		printf("타겟 저장 인덱스 : %d\n", idx);
 	}
 	return 0;
@@ -88,22 +98,27 @@ int main() {
 ```C
 #include <stdio.h>
 
-int BSearch(int ar[], int len, int target) {
-
+int BSearch(int ar[], int len, int target) 
+{
 	int first = 0;                // 탐색 대상의 시작 인덱스 값
 	int last = len - 1;           // 탐색 대상의 마지막 인덱스 값
 	int mid;
 
-	while (first <= last) {
+	while (first <= last) 
+	{
 		mid = (first + last) / 2;     // 탐색 대상의 중앙을 찾는다.
-		if (target == ar[mid]) {        // 중앙에 저장된 값이 타겟이라면
+		if (target == ar[mid]) 
+		{        // 중앙에 저장된 값이 타겟이라면
 			return mid;             // 탐색 완료
 		}
-		else {                   // 타겟이 아니라면 탐색 대상을 반으로 줄임
-			if (target < ar[mid]) {
+		else 
+		{                   // 타겟이 아니라면 탐색 대상을 반으로 줄임
+			if (target < ar[mid]) 
+			{
 				last = mid - 1;
 			}
-			else {
+			else 
+			{
 				first = mid + 1;
 			}
 		}
@@ -111,22 +126,27 @@ int BSearch(int ar[], int len, int target) {
 	return -1;                    // 찾지 못했음을 의미하는 값 반환 
 }
 
-int main() {
+int main() 
+{
 	int arr[] = { 1, 3, 5, 7, 9 };
 	int idx;
 	idx = BSearch(arr, sizeof(arr) / sizeof(int), 7);
-	if (idx == -1) {
+	if (idx == -1) 
+	{
 		printf("탐색 실패 \n");
 	}
-	else {
+	else 
+	{
 		printf("타겟 저장 인덱스 : %d\n", idx);
 	}
 
 	idx = BSearch(arr, sizeof(arr) / sizeof(int), 4);
-	if (idx == -1) {
+	if (idx == -1) 
+	{
 		printf("탐색 실패\n");
 	}
-	else {
+	else 
+	{
 		printf("타겟 저장 인덱스 : %d\n", idx);
 	}
 	return 0;
@@ -172,24 +192,28 @@ int main() {
 ```C
 #include <stdio.h>
 
-int BSearch(int ar[], int len, int target) {
-
+int BSearch(int ar[], int len, int target) 
+{
 	int first = 0;
 	int last = len - 1;
 	int mid;
 	int opCount = 0;
 
-
-	while (first <= last) {
+	while (first <= last) 
+	{
 		mid = (first + last) / 2;
-		if (target == ar[mid]) {
+		if (target == ar[mid]) 
+		{
 			return mid;
 		}
-		else {                   
-			if (target < ar[mid]) {
+		else 
+		{                   
+			if (target < ar[mid]) 
+			{
 				last = mid - 1;
 			}
-			else {
+			else 
+			{
 				first = mid + 1;
 			}
 		}
@@ -199,33 +223,40 @@ int BSearch(int ar[], int len, int target) {
 	return -1;                    
 }
 
-int main() {
+int main() 
+{
 	int arr1[500] = { 0, };    // 모든 요소 0으로 초기화
 	int arr2[5000] = { 0, };    // 모든 요소 0으로 초기화
 	int arr3[50000] = { 0, };    // 모든 요소 0으로 초기화
 	int idx;
 
 	idx = BSearch(arr1, sizeof(arr1) / sizeof(int), 1);
-	if (idx == -1) {
+	if (idx == -1) 
+	{
 		printf("탐색 실패 \n\n");
 	}
-	else {
+	else 
+	{
 		printf("타겟 저장 인덱스 : %d\n", idx);
 	}
 
 	idx = BSearch(arr2, sizeof(arr2) / sizeof(int), 2);
-	if (idx == -1) {
+	if (idx == -1) 
+	{
 		printf("탐색 실패 \n\n");
 	}
-	else {
+	else 
+	{
 		printf("타겟 저장 인덱스 : %d\n", idx);
 	}
 
 	idx = BSearch(arr3, sizeof(arr3) / sizeof(int), 3);
-	if (idx == -1) {
+	if (idx == -1) 
+	{
 		printf("탐색 실패 \n\n");
 	}
-	else {
+	else 
+	{
 		printf("타겟 저장 인덱스 : %d\n", idx);
 	}
 	return 0;
