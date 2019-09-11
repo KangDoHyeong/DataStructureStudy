@@ -334,7 +334,6 @@ int PointComp(Point * pos1, Point * pos2)
     - Point.h, Point.c &nbsp; &nbsp; 구조체 Point를 위한 파일
     - ArrayList.h, ArrayList.c &nbsp;&nbsp; 배열 기반 리스트
     - PointListMain.c &nbsp; &nbsp; 구조체 Point의 변수 저장
-    
 <br><br>
 - PointListMain.c
 
