@@ -36,7 +36,6 @@
         → 결론 : 최악의 경우로 따진다.
 
 
-
 ### 순차 탐색(Linear Search) 알고리즘과 시간 복잡도 분석의 핵심요소
 
 ```C
@@ -76,8 +75,8 @@ int main() {
 }
 ```
 #### 순차 탐색 알고리즘의 시간복잡도 계산하기
-- 최악의 경우(worst case) : T(n) = n
-- 평균적인 경우(worst case) : T(n) = (3/4)n 
+- 최악의 경우(worst case) : T(n) = n        -> _O_(n)
+- 평균적인 경우(worst case) : T(n) = (3/4)n  
    <br> (가정 1: 탐색 대상이 배열에 존재하지 않을 확률은 50% <br> 가정 2: 배열의 첫 요소부터 마지막 요소까지 탐색 대상이 존재할 확률은 동일)
 
 
@@ -85,3 +84,163 @@ int main() {
 ### 이진 탐색(binary search) 알고리즘의 소개
 - 순차탐색보다 좋은 성능이나 조건이 있음
   <br> : **데이터가 정렬되어 있어야한다**
+  
+  
+  
+```C
+#include <stdio.h>
+
+int BSearch(int ar[], int len, int target) {
+
+	int first = 0;                // 탐색 대상의 시작 인덱스 값
+	int last = len - 1;           // 탐색 대상의 마지막 인덱스 값
+	int mid;
+
+	while (first <= last) {
+		mid = (first + last) / 2;     // 탐색 대상의 중앙을 찾는다.
+		if (target == ar[mid]) {        // 중앙에 저장된 값이 타겟이라면
+			return mid;             // 탐색 완료
+		}
+		else {                   // 타겟이 아니라면 탐색 대상을 반으로 줄임
+			if (target < ar[mid]) {
+				last = mid - 1;
+			}
+			else {
+				first = mid + 1;
+			}
+		}
+	}
+	return -1;                    // 찾지 못했음을 의미하는 값 반환 
+}
+
+int main() {
+	int arr[] = { 1, 3, 5, 7, 9 };
+	int idx;
+	idx = BSearch(arr, sizeof(arr) / sizeof(int), 7);
+	if (idx == -1) {
+		printf("탐색 실패 \n");
+	}
+	else {
+		printf("타겟 저장 인덱스 : %d\n", idx);
+	}
+
+	idx = BSearch(arr, sizeof(arr) / sizeof(int), 4);
+	if (idx == -1) {
+		printf("탐색 실패\n");
+	}
+	else {
+		printf("타겟 저장 인덱스 : %d\n", idx);
+	}
+	return 0;
+}
+```
+####  이진탐색 알고리즘의 단계
+1. 시작 인덱스와 마지막 인덱스를 통해 탐색 대상의 중앙 찾기
+2. 중앙값이 타겟인 경우 : 탐색 완료
+3. 중앙에 저장된 값이 타겟이 아닌 경우: <br> 중앙값이 타겟보다 크면, 마지막 인덱스를 중앙값보다 하나 작은 값으로 이동 
+   <br> 중앙값이 타겟보다 작으면,  인덱스를 중앙값보다 하나 큰 값으로 이동
+4. 다시 1번과정으로 돌아가 1, 2, 3 과정 진행 -> 시작 인덱스가 마지막 인덱스보다 크거나 같아지면 종료!
+
+
+#### 이진 탐색 알고리즘의 시간복잡도 계산하기
+- 최악의 경우(worst case) : T(n) = log_{2}(n) + 1 -> _O_(logn)
+
+
+### 대표적인 빅-오
+
+| 기호 | 이름 | 설명 |
+|---|:---:|:---:|
+| _O_(1) | 상수형 빅-오 | 데이터 수에 상관없이 연산횟수가 고정인 유형의 알고리즘 |
+| _O_(logn) | 로그형 빅-오 | 데이터 수의 증가율에 비해서 연산횟수의 증가율이 훨씬 낮은 알고리즘 |
+| _O_(n) | 선형 빅-오 | 데이터의 수와 연산횟수가 비례하는 알고리즘|
+| _O_(nlongn) | 선형로그형 빅-오 | 데이터의 수가 2배로 늘 때, 연산횟수는 두 배를 조금 넘게 증가하는 알고리즘 |
+| _O_(n^{2}) |  | 데이터 수의 제곱에 해당하는 연산횟수를 요구하는 알고리즘 |
+| _O_(n^{3}) |  |  데이터 수의 세 제곱에 해당하는 연산횟수를 요구하는 알고리즘 |
+| _O_(2^{n}) | 지수형 빅-오 |  사용하기에 무리가 잇는 비현실적인 알고리즘 |
+> _O_(1) < _O_(logn) < _O_(n) < _O_(nlongn) < _O_(n^{2}) < _O_(n^{3}) < _O_(2^{n})
+
+
+### 순차 탐색 알고리즘과 이진 탐색 알고리즘의 비교
+
+#### _O_(logn) 과 _O_(n) 알고리즘의 비교연산횟수를 수치적으로 비교해보기
+- 비교를 위한 원칙
+	- 최악의 경우를 대상으로 비교하는 것이 목적 → 탐색의 실패 유도하기
+	- 탐색의 실패가 결정되기까지 몇 번의 비교연산이 진행되는지 세기
+	- 데이터의 수는 500, 5000, 50000일 때를 기준으로 각각 실험 진행하기
+- _O_(n)의 경우 데이터의 수가 곧 비교연산횟수이므로 계산을 따로 진행하지 않음
+
+##### _O_(n) 알고리즘의 비교연산 횟수
+
+```C
+#include <stdio.h>
+
+int BSearch(int ar[], int len, int target) {
+
+	int first = 0;
+	int last = len - 1;
+	int mid;
+	int opCount = 0;
+
+
+	while (first <= last) {
+		mid = (first + last) / 2;
+		if (target == ar[mid]) {
+			return mid;
+		}
+		else {                   
+			if (target < ar[mid]) {
+				last = mid - 1;
+			}
+			else {
+				first = mid + 1;
+			}
+		}
+		opCount += 1;
+	}
+	printf("비교연산횟수: %d \n", opCount);    // 탐색 실패 시 연산횟수 출력
+	return -1;                    
+}
+
+int main() {
+	int arr1[500] = { 0, };    // 모든 요소 0으로 초기화
+	int arr2[5000] = { 0, };    // 모든 요소 0으로 초기화
+	int arr3[50000] = { 0, };    // 모든 요소 0으로 초기화
+	int idx;
+
+	idx = BSearch(arr1, sizeof(arr1) / sizeof(int), 1);
+	if (idx == -1) {
+		printf("탐색 실패 \n\n");
+	}
+	else {
+		printf("타겟 저장 인덱스 : %d\n", idx);
+	}
+
+	idx = BSearch(arr2, sizeof(arr2) / sizeof(int), 2);
+	if (idx == -1) {
+		printf("탐색 실패 \n\n");
+	}
+	else {
+		printf("타겟 저장 인덱스 : %d\n", idx);
+	}
+
+	idx = BSearch(arr3, sizeof(arr3) / sizeof(int), 3);
+	if (idx == -1) {
+		printf("탐색 실패 \n\n");
+	}
+	else {
+		printf("타겟 저장 인덱스 : %d\n", idx);
+	}
+	return 0;
+}
+
+```
+##### 결론
+| n | 순차 탐색 연산횟수 | 이진탐색 연산횟수 |
+|:---:|:---:|:---:|
+| 500 | 500 | 9 |
+| 5,000 | 5,000 | 13 |
+| 50,000 | 50,000 | 16 |
+
+
+### 빅-오에 대한 수학적 접근 
+> 두 개의 함수 _f(n)_ 과 _g(n)_ 이 주어졌을 때, <br> 모든 n>=K에 대하여  _f(n)_ <= C _g(n)_ 을 만족하는 두 개의 상수 C와 K가 존재하면, _f(n)_ 의 빅-오는 _O_(g(n)) 이다.
