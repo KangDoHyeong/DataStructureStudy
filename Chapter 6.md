@@ -108,13 +108,111 @@ int main(void)
 	Push(&stack, 3);
 	Push(&stack, 4);
 	Push(&stack, 5);
-
+	
+	printf("%d\n", Peek(&stack));
 	while (!IsEmpty(&stack))
 		printf("%d\n", Pop(&stack));
 
 
 	return 0;
   
+}
+```
+
+## 6-3 스택의 연결리스트 기반 구현
+노드를 머리가 아닌 꼬리에 삽입하는 연결리스트를 구현하면 된다.
+노드 
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TRUE 1
+#define FALSE 0
+
+typedef int Data;
+
+typedef struct _node
+{
+	Data data;
+	struct _node * next;
+} Node;
+
+typedef struct _listStack
+{
+	Node * head;
+
+} ListStack;
+
+typedef ListStack Stack;
+
+void StackInit(Stack* pstack) 
+{
+	pstack->head = NULL;
+}
+
+int IsEmpty(Stack* pstack)
+{
+	if (pstack->head == NULL)
+		return TRUE;
+	else
+		return FALSE;
+}
+void Push(Stack * pstack, Data data)
+{
+	Node * newNode = (Node*)malloc(sizeof(Node));
+
+	newNode->data = data;
+	newNode->next = pstack->head;
+
+	pstack->head = newNode;
+}
+Data Pop(Stack * pstack)
+{
+	Data rdata;
+	Node * rnode;
+
+	if (IsEmpty(pstack)) {
+		printf("STACK MEMORY ERROR!\n");
+		exit(-1);
+	}
+	rdata = pstack->head->data;
+	rnode = pstack->head;
+
+	pstack->head = pstack->head->next;
+	free(rnode);
+
+	return rdata;
+
+}
+Data Peek(Stack * pstack)
+{
+	if (IsEmpty(pstack)) {
+		printf("STACK MEMORY ERROR!\n");
+		exit(-1);
+	}
+
+	return pstack->head->data;
+}
+
+int main(void)
+{
+	
+	Stack stack;
+	StackInit(&stack);
+	
+	Push(&stack, 1);
+	Push(&stack, 2);
+	Push(&stack, 3);
+	Push(&stack, 4);
+	Push(&stack, 5);
+	
+	printf("%d\n", Peek(&stack));
+	while (!IsEmpty(&stack))
+		printf("%d\n", Pop(&stack));
+
+
+	return 0;
 }
 ```
 
