@@ -77,7 +77,7 @@ int main(void)
      - void ListInit(List * plist);
          - 초기화할 리스트의 주소 값을 인자로 전달한다.
          - 리스트 생성 후 제일 먼저 호출되어야 하는 함수이다.
-	 > C++ , java 에서는 생략합니다.
+> C++ , java 에서는 생략합니다.
 <br><br>
 - 데이터 저장
     - void LInsert(List * plist, LData data);
