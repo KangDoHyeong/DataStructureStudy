@@ -389,7 +389,7 @@ int main(void)
 
 	if(LFirst(&list, &ppos))
 	{
-		if(PointComp(ppos, &compPos)==1)
+		if((PointComp(ppos, &compPos)==0)&&(PointComp(ppos, &compPos)==1))
 		{
 			ppos=LRemove(&list);
 			free(ppos);
@@ -397,7 +397,7 @@ int main(void)
 		
 		while(LNext(&list, &ppos)) 
 		{
-			if(PointComp(ppos, &compPos)==1)
+			if((PointComp(ppos, &compPos)==0)&&(PointComp(ppos, &compPos)==1))
 			{
 				ppos=LRemove(&list);
 				free(ppos);
