@@ -80,6 +80,7 @@ int main(void)
 > C++ , java 에서는 생략합니다.
 
 <br>
+
 - 데이터 저장
     - void LInsert(List * plist, LData data);
         - 리스트에 데이터를 저장한다. 매개변수 data에 전달된 값을 저장한다.
