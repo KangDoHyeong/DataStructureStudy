@@ -23,7 +23,7 @@ typedef struct _wallet // 동전 및 지폐 일부만을 대상으로 표현한 
 } Wallet;
 ```
 
->" 완전한 자료형의 정의로 인식되기 위해서는 해당 자료형과 관련이 있는 연산이 함께 정의도어야 한다!"
+>" 완전한 자료형의 정의로 인식되기 위해서는 해당 자료형과 관련이 있는 연산이 함께 정의되어야 한다!"
 
 - 자료형 Wallet 정의의 일부
     - 돈을 꺼내는 연산 int TakeOutMoney(Wallet * pw, int coinNum, int billNum);
