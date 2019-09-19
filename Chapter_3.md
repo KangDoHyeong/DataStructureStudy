@@ -252,7 +252,7 @@ int LNext(List * plist, LData * pdata)
 
 LData LRemove(List * plist)
 {
-	int rpos = plist->curPosition; // 삭제할 데이터의 인덱스 값 차조
+	int rpos = plist->curPosition; // 삭제할 데이터의 인덱스 값 조
 	int num = plist->numOfData;
 	int i;
 	LData rdata = plist->arr[rpos]; // 삭제할 데이터를 임시로 저장
