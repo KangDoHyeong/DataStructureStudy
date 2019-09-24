@@ -1,5 +1,6 @@
 # chapter 04
-## Linked! 무엇을 연결하겠다는 뜻인가!
+## 연결 리스트의 개념적인 이해
+### Linked! 무엇을 연결하겠다는 뜻인가!
 - LinkedRead.c
 
 ``` C
@@ -121,7 +122,7 @@ int main(void)
  - head와 tail은 연결을 추가 및 유지하기 위한것
  - cur은 참조 및 조회를 위한것
 
-## 연결 리스트에서의 데이터 삽입
+### 연결 리스트에서의 데이터 삽입
 
 ``` C
 while(1) 
@@ -152,7 +153,7 @@ while(1)
 
 <img src="./img/img_04-3.PNG" width="60%">
 
-## 연결 리스트에서의 데이터 조회
+### 연결 리스트에서의 데이터 조회
 
 ``` C
 if(head == NULL) 
@@ -172,7 +173,7 @@ else
 
 <img src="./img/img_04-4.PNG" width="60%">
 
-## 연결 리스트에서의 데이터 삭제
+### 연결 리스트에서의 데이터 삭제
 
 ``` C
 if(head == NULL) 
@@ -200,7 +201,8 @@ else
 
 <img src="./img/img_04-5.PNG" width="60%">
 
-## 정렬 기능이 추가된 연결 리스트의 ADT 정의
+## 단순 연결 리스트의 ADT와 구현
+### 정렬 기능이 추가된 연결 리스트의 ADT 정의
 - void ListInit(List * plist);
  - 초기화할 리스트의 주소 값을 인자로 전달한다.
  - 리스트 생성 후 제일 먼저 호출되어야 하는 함수이다.
@@ -232,26 +234,26 @@ else
  
 >SetSortRule 함수는 정렬의 기준을 설정하기 위해 정의된 함수! 이 함수의 선언 및 정의를 이해하기 위해서는 „함수 포인터‟의 대한 이해가 필요하다.
  
-## 새 노드의 추가 위치에 따른 장점과 단점
+### 새 노드의 추가 위치에 따른 장점과 단점
 
-### 새 노드를 연결 리스트의 머리에 추가하는 경우
+#### 새 노드를 연결 리스트의 머리에 추가하는 경우
 - 장점 : 포인터 변수 tail이 불필요하다.
 - 단점 : 저장된 순서를 유지하지 않는다.
 
-### 새 노드를 연결 리스트의 꼬리에 추가하는 경우
+#### 새 노드를 연결 리스트의 꼬리에 추가하는 경우
 - 장점 : 저장된 순서가 유지된다.
 - 단점 : 포인터 변수 tail이 필요하다.
 
 > 두 가지 다 가능한 방법이다. 다만 tail의 관리를 생략하기 위해서 머리에 추가하는 것을 원칙으로 하자!
 
-## SetSortRule 함수 선언에 대한 이해
+### SetSortRule 함수 선언에 대한 이해
 
 ``` C
 void SetSortRule(List * plist, int (*comp)(LData d1, LData d2));
 ```
 > "반환형이 int이고 LData형 인자를 두 개 전달받는 함수의 주소 값을 두 번재 인자로 전달해라!"
 
-### 인자로 전달이 가능한 함수의 예
+#### 인자로 전달이 가능한 함수의 예
 ``` C 
 int WhoIsPrecede(LData d1, LData d2)    // typedef int LData; 
 {     
@@ -264,19 +266,19 @@ int WhoIsPrecede(LData d1, LData d2)    // typedef int LData;
 
 > 이렇듯 결정된 약속을 근거로 함수가 정의되어야 하며, 연결 리스트 또한 이를 근거로 구현되어야 한다.
 
-## 더미 노드(Dummy Node) 기반의 단순 연결 리스트
+### 더미 노드(Dummy Node) 기반의 단순 연결 리스트
 
-### 더미 노드(Dummy Node) 란?
+#### 더미 노드(Dummy Node) 란?
  - 유효한 데이터를 지니지 않는 그냥 빈 노드를 일컫는 말이다.
  
-### 머리에 새 노드를 추가하되 더미 노드가 있는 연결 리스트
+#### 머리에 새 노드를 추가하되 더미 노드가 있는 연결 리스트
 <img src="./img/img_04-6.PNG" width="100%">
 
 > 노드의 추가 및 삭제 방식이 항상 일정하다.
 
-## 정렬 기능이 추가된 연결 리스트의 구조체와 헤더파일의 정의
+### 정렬 기능이 추가된 연결 리스트의 구조체와 헤더파일의 정의
 
-### 노드의 구조체 표현
+#### 노드의 구조체 표현
 
 ``` C
 typedef struct node
@@ -287,7 +289,7 @@ typedef struct node
 ```
 > 연결 리스트에 필요한 변수들을 구조체로 묶지 않는ㄴ 것은 옳지 못하다.
 
-### 연결 리스트의 구조체 표현
+#### 연결 리스트의 구조체 표현
 
 ``` C
 typedef struct _linkedList
@@ -344,7 +346,7 @@ void SetSortRule(List * plist, int (*comp)(LData d1, LData d2));
 #endif
 ```
 
-## 더미 노드 기반의 단순 연결 리스트 구현
+### 더미 노드 기반의 단순 연결 리스트 구현
 
 - DLinkedList.c
 
@@ -525,15 +527,17 @@ int main(void)
 > 33 11 11<br>
 
 ## 연결 리스트의 정렬 삽입의 구현
-### 단순 연결 리스트의 정렬 관련 요소 세 가지
+### 정렬기준 설정과 관련된 부분
+#### 단순 연결 리스트의 정렬 관련 요소 세 가지
 - 정렬기준이 되는 함수를 등록하는 SetSortRule 함수
 - SetSortRule 함수를 통해 전달된 함수정보 저장을 위한 LinkedList의 멤버 comp
 - comp에 등록된 정렬기준을 근거로 데이터를 저장하는 SInsert 함수
 <br>
 
-### 하나의 문장으로 구성한 결과
+#### 하나의 문장으로 구성한 결과
 
 > " SetSortRule 함수가 호출되면서 정렬의 기준이 리스트의 멤버 comp에 등록되면, SInsert함수 내에서는 comp에 등록된 정렬의 기준을 근거로 데이터를 정렬하여 저장한다."
+
 
 ### SInsert 함수
 
@@ -567,8 +571,8 @@ void SInsert(List * plist, LData data)
 
 <img src="./img/img_04-10.PNG" width="90%">
 
-## 정렬의 핵심인 while 반복문
-### 반복의 조건
+### 정렬의 핵심인 while 반복문
+#### 반복의 조건
 - pred->next != NULL
   - pred가 리스트의 마지막 노드를 가리키는지 묻기 위한 연산
 <br><br>
@@ -576,7 +580,7 @@ void SInsert(List * plist, LData data)
 - plist->comp(data, pred->next->data) != 0
   - 새 데이터와 pred의 다음 노드에 저장된 데이터의 우선순위 비교를 위한 함수호출 
    
-## comp의 반환 값과 그 의미
+### comp의 반환 값과 그 의미
 
 ``` C
 while(pred->next != NULL && plist->comp(data, pred->next->data) != 0)
@@ -585,20 +589,20 @@ while(pred->next != NULL && plist->comp(data, pred->next->data) != 0)
 	}
 ```
 
-### 이 내용을 근거로 SInsert 함수를 정의하였다.
+#### 이 내용을 근거로 SInsert 함수를 정의하였다.
 - comp가 0을 반환
  - 첫 번째 인자인 data가 정렬 순서상 앞서서 head에 더 가까워야 하는 경우
 <br><br>
 - comp가 1을 반환
  - 두 번째 인자인 pred->next->data가 정렬 순서상 앞서서 head에 더 가까워야 하는 경우
 
-## 정렬의 기준을 설정하기 위한 함수의 정의
-### 함수의 정의 기준
+### 정렬의 기준을 설정하기 위한 함수의 정의
+#### 함수의 정의 기준
 - 두 개의 인자를 전달받도록 함수를 정의한다.
 - 첫 번째 인자의 정렬 우선순위가 높으면 0을, 그렇지 않으면 1을 반환한다.
 <br><br>
 
-### 오름차순 정렬을 위한 함수의 정의
+#### 오름차순 정렬을 위한 함수의 정의
 
 ``` C
 int WhoIsPrecede(int d1, int d2)
