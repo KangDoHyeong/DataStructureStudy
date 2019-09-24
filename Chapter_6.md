@@ -229,3 +229,139 @@ int main(void)
 #### 스택을 활용한 후위표기법 변환
 
 연산자를 쌓아놓을 스택을 만들고 피연산자가 
+
+
+```C
+int GetOpPrec(char op)
+{
+	switch (op)
+	{
+	case '*':
+	case '/':
+		return 5;
+	case '+':
+	case '-':
+		return 3;
+	case '(':
+		return 1;
+	}
+	return -1;
+}
+
+int WhoPrecOp(char op1, char op2)
+{
+	int op1Prec = GetOpPrec(op1);
+	int op2Prec = GetOpPrec(op2);
+
+	if (op1Prec > op2Prec) return 1;
+	else if (op1Prec < op2Prec) return -1;
+	else return 0;
+}
+
+void ConvToRPNExp(char exp[])
+{
+	Stack stack;
+	int expLen = strlen(exp);
+	char * convExp = (char*)malloc(expLen + 1);
+	int i, idx = 0;
+	char tok, popOp;
+
+	memset(convExp, 0, sizeof(char)*expLen + 1);
+	StackInit(&stack);
+
+	for (i = 0; i < expLen;  i++)
+	{
+		tok = exp[i];
+		if (isdigit(tok))
+		{
+			convExp[idx++] = tok;
+		}
+		else
+		{
+			switch (tok)
+			{
+			case '(':
+				Push(&stack, tok);
+				break;
+			case ')':
+				while (1)
+				{
+					popOp = Pop(&stack);
+					if (popOp == '(')
+						break;
+					convExp[idx++] = popOp;
+				}
+				break;
+			case '+': case '-':
+			case '*': case '/':
+				while (!IsEmpty(&stack) &&
+					WhoPrecOp(Peek(&stack), tok) >= 0)
+					convExp[idx++] = Pop(&stack);
+				Push(&stack, tok);
+				break;
+
+			}
+		}
+	}
+	while (!IsEmpty(&stack))
+		convExp[idx++] = Pop(&stack);
+	strcpy(exp, convExp);
+	free(convExp);
+}
+
+int EvalRPNExp(char exp[])
+{
+	Stack stack;
+	int expLen = strlen(exp);
+	int i;
+	char tok, op1, op2;
+
+	StackInit(&stack);
+
+	for (i = 0; i < expLen; i++)
+	{
+		tok = exp[i];
+
+		if (isdigit(tok))
+		{
+			Push(&stack, tok - '0');
+		}
+		else
+		{
+			op2 = Pop(&stack);
+			op1 = Pop(&stack);
+			switch (tok)
+			{
+			case'+':
+				Push(&stack, op1 + op2);
+				break;
+			case '-':
+				Push(&stack, op1 - op2);
+				break;
+			case '*':
+				Push(&stack, op1*op2);
+				break;
+			case '/':
+				Push(&stack, op1 / op2);
+				break;
+
+			}
+		}
+	}
+	return Pop(&stack);
+}
+
+
+int main(void)
+{
+	char exp1[] = "1+2*3";
+	printf("중위표기법으로 표현된 연산식 : %s\n", exp1);
+	ConvToRPNExp(exp1);
+
+	printf("중위표기법을 후위표기법으로 변경 : %s\n", exp1);
+	printf("후위 표기법을 계산 : %s = %d\n", exp1, EvalRPNExp(exp1));
+
+
+	return 0;
+}
+```
