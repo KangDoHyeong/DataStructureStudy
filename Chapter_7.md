@@ -18,7 +18,7 @@ int IsEmpty(Queue * pq);
 void Enqueue(Queue * pq)
 - 큐에 매개변수로 전달된 데이터를 저장한다. 
 
-Data Dequeue (Queue * pq); 
+Data Dequeue (Queue * pq, data); 
 - 저장순서가 가장 앞선 데이터를 삭제한다. 
 - 삭제된 데이터는 반환된다. 
 - IsEmpty의 반환값이 FALSE(0)임을 전제로 한다.
@@ -244,6 +244,221 @@ int main(void)
 		printf("%d ", Dequeue(&q));
 
 
+
+	return 0;
+}
+```
+## 7-4. 덱(Deque)란?
+노드를 앞(Front)에 생성할 수도 있고, 뒤(Rear)에 생성할 수도 있는 큐 형태<br>
+
+
+### 덱 ADT (Abstract Data Type) 정의
+void DequeInit(Queue * pdeq); 
+- 덱의 초기화를 진행한다.
+- 덱 생성 후 제일 먼저 호출되어야 하는 함수
+
+int DQIsEmpty(Deque * pdeq);
+- 덱이 비어있는지 한 개 이상의 데이터가 들어가 있는지 확인하는 함수
+- 덱이 빈 경우에는 TRUE(1)을, 그렇지 않은 경우에는 FALSE(0)을 반환한다.
+
+void DQAddFirst(Deque * pdeq, Data data);
+- 덱의 머리 매개변수로 전달된 데이터를 저장한다. 
+
+void DQAddLast(Deque * pdeq, Data data);
+- 덱의 꼬리 매개변수로 전달된 데이터를 저장한다. 
+
+Data DQRemoveFirst(Deque * pdeq);
+- 덱의 머리에 저장된 데이터를 반환한다.
+- 반환된 데이터는 삭제한다. 
+- DQIsEmpty의 반환값이 FALSE(0)임을 전제로 한다.
+
+Data DQRemoveLast(Deque * pdeq);
+- 덱의 꼬리에 저장된 데이터를 반환한다.
+- 반환된 데이터는 삭제한다. 
+- DQIsEmpty의 반환값이 FALSE(0)임을 전제로 한다.
+
+Data DQPeekFirst(Deque * pdeq);
+- 덱의 머리에 저장된 데이터를 반환한다.
+- 반환된 데이터는 삭제하지 않는다.
+- DQIsEmpty의 반환값이 FALSE(0)임을 전제로 한다.
+
+Data DQPeekFirst(Deque * pdeq);
+- 덱의 꼬리에 저장된 데이터를 반환한다.
+- 반환된 데이터는 삭제한다. 
+- DQIsEmpty의 반환값이 FALSE(0)임을 전제로 한다.
+
+DQReverse(Deque * pdeq);
+- 꼬리와 머리의 위치를 바꾼다.
+
+<br></br>
+
+```C
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TRUE	1
+#define FALSE	0
+
+typedef int Data;
+
+typedef struct _node
+{
+	Data data;
+	struct _node * next;
+	struct _node * prev;
+} Node;
+
+typedef struct _dlDeque
+{
+	Node * head;
+	Node * tail;
+} DLDeque;
+
+typedef DLDeque Deque;
+
+void DequeInit(Deque * pdeq)
+{
+	pdeq->head = NULL;
+	pdeq->tail = NULL;
+}
+
+int DQIsEmpty(Deque * pdeq)
+{
+	if (pdeq->head == NULL)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+void DQAddFirst(Deque * pdeq, Data data)
+{
+	Node * newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+
+	newNode->next = pdeq->head;
+
+	if (DQIsEmpty(pdeq))
+		pdeq->tail = newNode;
+	else
+		pdeq->head->prev = newNode;
+
+	newNode->prev = NULL;
+	pdeq->head = newNode;
+}
+
+void DQAddLast(Deque * pdeq, Data data)
+{
+	Node * newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+
+	newNode->prev = pdeq->tail;
+
+	if (DQIsEmpty(pdeq))
+		pdeq->head = newNode;
+	else
+		pdeq->tail->next = newNode;
+
+	newNode->next = NULL;
+	pdeq->tail = newNode;
+}
+
+Data DQRemoveFirst(Deque * pdeq)
+{
+	Node * rnode = pdeq->head;
+	Data rdata = pdeq->head->data;
+
+	if (DQIsEmpty(pdeq))
+	{
+		printf("Deque Memory Error!");
+		exit(-1);
+	}
+
+	pdeq->head = pdeq->head->next;
+	free(rnode);
+
+	if (pdeq->head == NULL)
+		pdeq->tail = NULL;
+	else
+		pdeq->head->prev = NULL;
+
+	return rdata;
+}
+
+Data DQRemoveLast(Deque * pdeq)
+{
+	Node * rnode = pdeq->tail;
+	Data rdata = pdeq->tail->data;
+
+	if (DQIsEmpty(pdeq))
+	{
+		printf("Deque Memory Error!");
+		exit(-1);
+	}
+
+	pdeq->tail = pdeq->tail->prev;
+	free(rnode);
+
+	if (pdeq->tail == NULL)
+		pdeq->head = NULL;
+	else
+		pdeq->tail->next = NULL;
+
+	return rdata;
+}
+
+Data DQGetFirst(Deque * pdeq)
+{
+	if (DQIsEmpty(pdeq))
+	{
+		printf("Deque Memory Error!");
+		exit(-1);
+	}
+
+	return pdeq->head->data;
+}
+
+Data DQGetLast(Deque * pdeq)
+{
+	if (DQIsEmpty(pdeq))
+	{
+		printf("Deque Memory Error!");
+		exit(-1);
+	}
+
+	return pdeq->tail->data;
+}
+
+int main(void)
+{
+	Deque deq;
+	DequeInit(&deq);
+
+	DQAddFirst(&deq, 3);
+	DQAddFirst(&deq, 2);
+	DQAddFirst(&deq, 1);
+
+	DQAddLast(&deq, 4);
+	DQAddLast(&deq, 5);
+	DQAddLast(&deq, 6);
+
+	printf("%d\t%d\n", DQGetFirst(&deq), DQGetLast(&deq));
+
+	while (!DQIsEmpty(&deq))
+		printf("%d ", DQRemoveFirst(&deq));
+
+	printf("\n");
+
+
+	DQAddFirst(&deq, 3);
+	DQAddFirst(&deq, 2);
+	DQAddFirst(&deq, 1);
+
+	DQAddLast(&deq, 4);
+	DQAddLast(&deq, 5);
+	DQAddLast(&deq, 6);
+
+	while (!DQIsEmpty(&deq))
+		printf("%d ", DQRemoveLast(&deq));
 
 	return 0;
 }
