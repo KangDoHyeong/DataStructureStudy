@@ -1,7 +1,7 @@
 # Chapter 7. 큐(Queue)
 
 ## 7-1. 큐(Queue)란?
-First-In, Last-In 형태의 자료구조<br>
+First-In, First-Out 형태의 자료구조<br>
 가장 첫번째로 들어간 데이터가 가장 먼저 출력된다.<br> 
 반대로 마지막에 들어간 데이터가 제일 나중에 출력된다. <br>
 
@@ -15,7 +15,7 @@ int IsEmpty(Queue * pq);
 - 큐가 비어있는지 한 개 이상의 데이터가 들어가 있는지 확인하는 함수
 - 큐가 빈 경우에는 TRUE(1)을, 그렇지 않은 경우에는 FALSE(0)을 반환한다.
 
-void Enqueue(Queue * pq)
+void Enqueue(Queue * pq);
 - 큐에 매개변수로 전달된 데이터를 저장한다. 
 
 Data Dequeue (Queue * pq, data); 
