@@ -251,7 +251,7 @@ else
 ``` C
 void SetSortRule(List * plist, int (*comp)(LData d1, LData d2));
 ```
-> "반환형이 int이고 LData형 인자를 두 개 전달받는 함수의 주소 값을 두 번재 인자로 전달해라!"
+> "반환형이 int이고 LData형 인자를 두 개 전달받는 함수의 주소 값을 두 번째 인자로 전달해라!"
 
 #### 인자로 전달이 가능한 함수의 예
 ``` C 
